@@ -23,6 +23,7 @@
         >
           Documentation
         </a>
+        <nuxt-link to="test">Go to test</nuxt-link>
         <vs-button
       >test</vs-button>
         <a
