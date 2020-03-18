@@ -12,10 +12,11 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "dependencies": {
-        "nuxt": "^2.0.0",
-        "vuesax": "^3.11.13",
         "@nuxtjs/axios": "^5.3.6",
-        "@nuxtjs/dotenv": "^1.4.0"
+        "@nuxtjs/dotenv": "^1.4.0",
+        "material-icons": "^0.3.1",
+        "nuxt": "^2.0.0",
+        "vuesax": "^3.11.13"
     },
     "devDependencies": {
         "axios": "^0.19",
