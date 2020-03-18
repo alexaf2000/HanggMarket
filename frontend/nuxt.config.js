@@ -38,7 +38,8 @@ export default {
      ** Plugins to load before mounting the App
      */
     plugins: [
-        '~/plugins/vuesax'
+        '~/plugins/vuesax',
+        '~/plugins/material-icons'
     ],
     router: {
         // Defines the base URL for vue router in case there was some directory prefix
