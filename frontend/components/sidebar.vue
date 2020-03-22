@@ -32,13 +32,9 @@
 </template>
 
 <script>
-import loginbutton from "~/components/loginbutton.vue";
 import { mapGetters } from "vuex";
 
 export default {
-  components: {
-    loginbutton
-  },
   methods: {
     async logout() {
       this.$store.dispatch("auth/logout");
