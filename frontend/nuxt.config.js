@@ -8,6 +8,7 @@ export default {
      ** Headers of the page
      */
     env: {
+        appUrl: process.env.APP_URL,
         apiUrl: process.env.API_URL || process.env.APP_URL + '/api',
         appName: process.env.APP_NAME || 'Laravel Nuxt',
         appLocale: process.env.APP_LOCALE || 'en'
@@ -43,11 +44,14 @@ export default {
      */
     plugins: [
         '~/plugins/vuesax',
-        '~/plugins/material-icons'
+        '~/plugins/material-icons',
+        '~/plugins/nuxt-client-init', //? By default nuxt don't allow to execute when first time load (used on store/index)
+        '~/plugins/axios',
     ],
     router: {
         // Defines the base URL for vue router in case there was some directory prefix
-        base: new URL(process.env.APP_URL).pathname
+        base: new URL(process.env.APP_URL).pathname,
+        middleware: ['check-auth']
     },
     /*
      ** Nuxt.js dev-modules
