@@ -50,13 +50,9 @@ class Product extends Model
      * @param String $dateToFind
      * @return Price
      */
-    public function Price(String $dateToFind)
+    public function Price()
     {
-        try {
-            $date = Carbon::parse($dateToFind);
-            return $this->Prices()->where('date_start', $dateToFind);
-        } catch (\Throwable $th) {
-            return null;
-        }
+        $date = Carbon::today();
+        return $this->Prices()->whereDate('date_start', '<=', $date)->whereDate('date_end', '>=', $date)->get();
     }
 }
