@@ -2,6 +2,7 @@
 
 namespace App\Products;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -32,5 +33,30 @@ class Product extends Model
     public function Images()
     {
         return $this->HasMany(Image::class);
+    }
+    /**
+     * Prices
+     * Relationship for Prices.
+     * @return Price
+     */
+    public function Prices()
+    {
+        return $this->hasMany(Price::class);
+    }
+
+    /**
+     * Price function
+     * This will return the price of the product in a date.
+     * @param String $dateToFind
+     * @return Price
+     */
+    public function Price(String $dateToFind)
+    {
+        try {
+            $date = Carbon::parse($dateToFind);
+            return $this->Prices()->where('date_start', $dateToFind);
+        } catch (\Throwable $th) {
+            return null;
+        }
     }
 }
