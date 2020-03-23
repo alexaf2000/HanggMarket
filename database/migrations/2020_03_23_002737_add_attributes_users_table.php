@@ -30,7 +30,8 @@ class AddAttributesUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn(['lastname','birthdate']);
+            $table->dropForeign(['profileimage_id']);
         });
     }
 }
