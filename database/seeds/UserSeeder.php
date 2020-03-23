@@ -1,9 +1,10 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class AddDefaultUsersSeed extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +15,10 @@ class AddDefaultUsersSeed extends Seeder
     {
         // Add admin user
         DB::table('users')->insert([
-            'name' => 'Administrador',
+            'name' => 'Pepito',
+            'lastname'=> 'Grillo',
             'email' => 'admin@admin.com',
+            'birthdate'=> Carbon::parse('22-11-2000'),
             'password' => bcrypt('admin')
         ]);
     }

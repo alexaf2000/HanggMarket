@@ -12,6 +12,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Add's default users
-        $this->call(AddDefaultUsersSeed::class);
+        $this->call(UserSeeder::class);
     }
 }
