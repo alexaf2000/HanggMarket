@@ -10,6 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Price extends Model
 {
-    protected $fillable = ['date_start', 'date_end'];
+    protected $fillable = ['value','date_start', 'date_end'];
 
 }
