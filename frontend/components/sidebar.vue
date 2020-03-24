@@ -67,13 +67,13 @@ export default {
   flex-direction: column;
   width: 100%;
 }
-h4 {
+.parentx-static h4 {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
 }
-h4 button {
+.parentx-static h4 button {
   margin-left: 10px;
 }
 .footer-sidebar {
