@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class AddAttributesUsersTable extends Migration
@@ -17,7 +18,9 @@ class AddAttributesUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('lastname')->after('name');
             $table->date('birthdate')->before('created_at');
-            $table->binary('profile_image')->nullable();
+            // Important: binary attribute is too short, instead
+            // we need to do this
+            DB::statement("ALTER TABLE users ADD profile_image  MEDIUMBLOB");
         });
     }
 

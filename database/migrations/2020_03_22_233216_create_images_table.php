@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateImagesTable extends Migration
@@ -16,9 +17,11 @@ class CreateImagesTable extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->binary('image');
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            // Important: binary attribute is too short, instead
+            // we need to do this
+            DB::statement("ALTER TABLE users ADD image  MEDIUMBLOB");
         });
     }
 
