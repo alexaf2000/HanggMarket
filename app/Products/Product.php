@@ -32,7 +32,7 @@ class Product extends Model
      */
     public function Images()
     {
-        return $this->HasMany(Image::class);
+        return $this->hasMany(Image::class);
     }
     /**
      * Prices
@@ -53,6 +53,9 @@ class Product extends Model
     public function Price()
     {
         $date = Carbon::today();
-        return $this->Prices()->whereDate('date_start', '<=', $date)->whereDate('date_end', '>=', $date)->first();
+        $price = $this->Prices()->whereDate('date_start', '<=', $date)->whereDate('date_end', '>=', $date)->first();
+        if ($price !== null) {
+            return $price->value;
+        }
     }
 }
