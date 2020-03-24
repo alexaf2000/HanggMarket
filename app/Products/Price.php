@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Price extends Model
 {
-    protected $fillable = ['value','date_start', 'date_end'];
+    protected $fillable = ['value', 'date_start', 'date_end'];
 
+    public function Product()
+    {
+        $this->belongsTo(Product::class);
+    }
 }
