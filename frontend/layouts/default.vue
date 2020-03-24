@@ -16,7 +16,7 @@ export default {
   components: {
     sidebar
   },
-  middleware: "auth"
+  middleware: "auth" // Every page that haves this layout will require the middleware auth
 };
 </script>
 <style>
@@ -41,19 +41,22 @@ html {
 .page-leave-to {
   opacity: 0;
 }
-.base-container{
+.base-container {
   height: 100vh;
   max-height: 100vh;
   display: flex;
+  overflow: hidden;
 }
-.left-sidebar{
+.left-sidebar {
   width: 250px;
   height: 100%;
-
+  z-index: 1;
 }
-.right-content{
+.right-content {
   width: 100%;
   height: 100%;
-
+  overflow-y: auto;
+  margin: 15px 2px 0px 15px;
+  z-index: 0;
 }
 </style>
