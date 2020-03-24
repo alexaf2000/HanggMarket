@@ -13,9 +13,16 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Category::all();
+        $Categories = new Category();
+        // If on route URL parameters is search we gonna use it for search
+        if (isset($request->search)) {
+            $searchTerm = $request->search;
+            $Categories = $Categories->where('name', 'LIKE', "%{$searchTerm}%")->orWhere('description', 'LIKE', "%{$searchTerm}%");
+        }
+        // Will return this with pagination by using page URL parameter
+        return $Categories->paginate(15);
     }
 
     /**
