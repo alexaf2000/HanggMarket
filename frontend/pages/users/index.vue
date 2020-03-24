@@ -2,13 +2,14 @@
   <div>
     <vs-row>
       <vs-col>
+        <vs-breadcrumb :items="breadcrumb" separator="chevron_right"></vs-breadcrumb>
+
         <vs-button
           @click="popupCreateUser=true"
           color="#008bef"
           size="small"
           icon="add"
         >Añadir usuario</vs-button>
-        <!--  -->
         <vs-popup title="Crear usuario" :active.sync="popupCreateUser">
           <vs-input color="#008bef" v-model="newUser.name" label-placeholder="Nombre" />
           <vs-input color="#008bef" v-model="newUser.lastname" label-placeholder="Apellido" />
@@ -74,7 +75,13 @@
                     </div>
 
                     <div>
-                      <vs-button vs-type="gradient" size="small" color="success" icon="edit"></vs-button>
+                      <vs-button
+                        vs-type="gradient"
+                        size="small"
+                        color="success"
+                        icon="edit"
+                        @click="goToUser(tr.id)"
+                      ></vs-button>
                       <vs-button
                         vs-type="flat"
                         size="small"
@@ -90,7 +97,7 @@
                     <vs-list-item
                       icon="calendar_today"
                       title="Creación de cuenta"
-                      :subtitle="new Date(tr.created_at)"
+                      :subtitle="Date(tr.created_at)"
                     ></vs-list-item>
                   </vs-list>
                 </div>
@@ -127,7 +134,13 @@ export default {
     selected: null, // Used for delete and modify (saves user id)
     pages: 0,
     actualPage: 1,
-    popupCreateUser: false
+    popupCreateUser: false,
+    breadcrumb: [
+      {
+        title: "Usuarios",
+        active: true
+      }
+    ]
   }),
   // Autoexecuted before load page
   async fetch() {
@@ -192,6 +205,9 @@ export default {
           });
         });
       this.actualPage = this.pages;
+    },
+    goToUser(id) {
+      this.$router.push("/users/" + id);
     }
   }
 };
