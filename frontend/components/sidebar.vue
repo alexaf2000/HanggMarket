@@ -9,7 +9,7 @@
       v-model="active"
     >
       <div class="header-sidebar" slot="header">
-        <vs-avatar size="70px" />
+        <vs-avatar size="70px" :src="user.profile_image" />
         <h4>{{user.name}}</h4>
       </div>
 
