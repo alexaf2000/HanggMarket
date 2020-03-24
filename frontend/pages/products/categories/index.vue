@@ -223,8 +223,8 @@ export default {
         type: "confirm",
         color: "danger",
         title: `¿Estás seguro?`,
-        textAccept: "Confirmar",
-        textCancel: "Cancelar",
+        acceptText: "Confirmar",
+        cancelText: "Cancelar",
         text: `Se va a proceder con la eliminación de la categoría "${this.selected.name}".`,
         accept: this.DeleteCategory
       });
