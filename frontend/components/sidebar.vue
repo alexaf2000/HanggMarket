@@ -10,7 +10,7 @@
     >
       <div class="header-sidebar" slot="header">
         <vs-avatar size="70px" />
-        <h4>Administrador</h4>
+        <h4>{{user.name}}</h4>
       </div>
 
       <vs-sidebar-item index="1" icon="home" to="/">Inicio</vs-sidebar-item>
