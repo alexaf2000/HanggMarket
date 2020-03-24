@@ -11,7 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Add's default users
+        // Add's admins user and faker users
         $this->call(UserSeeder::class);
+        // Add's default categories
+        $this->call(CategorySeeder::class);
     }
 }
