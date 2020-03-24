@@ -17,8 +17,7 @@ class AddAttributesUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('lastname')->after('name');
             $table->date('birthdate')->before('created_at');
-            $table->unsignedBigInteger('profileimage_id')->before('created_at')->nullable();
-            $table->foreign('profileimage_id')->references('id')->on('profile_images')->onDelete('cascade');
+            $table->blob('profile_image')->nullable();
         });
     }
 
@@ -30,8 +29,7 @@ class AddAttributesUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['lastname','birthdate']);
-            $table->dropForeign(['profileimage_id']);
+            $table->dropColumn(['lastname', 'birthdate', 'profile_image']);
         });
     }
 }
