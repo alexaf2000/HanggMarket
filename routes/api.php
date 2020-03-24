@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', 'AuthController@login');
 
+
 // Category routes
 Route::group(['prefix' => 'category', 'middleware' => 'auth:api'], function () {
     Route::get('/', 'CategoryController@index');
@@ -24,6 +25,15 @@ Route::group(['prefix' => 'category', 'middleware' => 'auth:api'], function () {
     Route::get('/show/{category}', 'CategoryController@show');
     Route::post('/update/{category}', 'CategoryController@update');
     Route::delete('/destroy/{category}', 'CategoryController@destroy');
+});
+
+// Users routes
+Route::group(['prefix' => 'user', 'middleware' => 'auth:api'], function () {
+    Route::get('/', 'UserController@index');
+    Route::post('/store', 'UserController@store');
+    Route::get('/show/{user}', 'UserController@show');
+    Route::post('/update/{user}', 'UserController@update');
+    Route::delete('/destroy/{user}', 'UserController@destroy');
 });
 
 Route::middleware('auth:api')->get('/details', function (Request $request) {
