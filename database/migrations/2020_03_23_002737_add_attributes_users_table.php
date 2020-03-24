@@ -17,7 +17,7 @@ class AddAttributesUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('lastname')->after('name');
             $table->date('birthdate')->before('created_at');
-            $table->blob('profile_image')->nullable();
+            $table->binary('profile_image')->nullable();
         });
     }
 
