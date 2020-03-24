@@ -4,7 +4,9 @@
       <sidebar />
     </div>
     <div class="right-content">
+      <div class="basic-container">
       <nuxt />
+      </div>
     </div>
   </div>
 </template>
@@ -56,7 +58,10 @@ html {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  margin: 15px 2px 0px 15px;
+  margin: 0px 2px 0px 0px;
   z-index: 0;
+}
+.right-content .basic-container{
+  margin: 15px;
 }
 </style>
