@@ -21,6 +21,7 @@ Route::post('/login', 'AuthController@login');
 Route::group(['prefix' => 'product'], function () {
     Route::get('/', 'ProductController@index');
     Route::post('/store', 'ProductController@store');
+    Route::get('/show/{product}/prices', 'ProductController@showPrices');
     Route::get('/show/{product}', 'ProductController@show');
     Route::post('/update/{product}', 'ProductController@update');
     Route::delete('/destroy/{product}', 'ProductController@destroy');

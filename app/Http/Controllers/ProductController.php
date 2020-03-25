@@ -116,6 +116,18 @@ class ProductController extends Controller
     }
 
     /**
+     * Display the product prices.
+     *
+     * @param  \App\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function showPrices(Product $product)
+    {
+        // Return the prices of this product
+        return $product->Prices;
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
