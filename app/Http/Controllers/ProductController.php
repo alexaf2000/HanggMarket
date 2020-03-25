@@ -22,20 +22,34 @@ class ProductController extends Controller
         $date = Carbon::today();
         $Products = new Product();
 
-        // Search terms if isset and is not empty
-        if (isset($request->search)) {
-            $searchTerm = $request->search;
-            $Products = $Products->where('name', 'LIKE', "%{$searchTerm}%")->orWhere('description', 'LIKE', "%{$searchTerm}%");
-        }
-
         // Return the Product with images, categories and JUST the price of today
         // ? Not used the Price model function because is not compatible with paginate
         $Products = $Products->with(['Images', 'Categories', 'Prices' => function ($q) use ($date) {
             $q->whereDate('date_start', '<=', $date);
             $q->whereDate('date_end', '>=', $date);
-        }])->paginate(15);
+        }]);
 
-        return $Products;
+
+        // Search where category - If defined Category as parameter
+        if (isset($request->category)) {
+            $Products = $Products->whereHas('categories', function (Builder $query) use ($request) {
+                $query->where('id', '=', $request->category);
+            });
+        }
+
+
+        // Search terms if isset and is not empty
+        if (isset($request->search)) {
+            $searchTerm = $request->search;
+            // Important the use inside a function, because if not, the before wheres will not be used
+            $Products = $Products->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', "%{$searchTerm}%")->orWhere('description', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+
+
+        return $Products->paginate(15);
     }
 
     /**
