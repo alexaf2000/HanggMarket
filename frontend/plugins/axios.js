@@ -28,7 +28,7 @@ export default ({ app, store, redirect }) => {
         response => response,
         error => {
             const { status } = error.response || {};
-
+            //TODO: Improve catching with some beautiful alert instead of standard
             if (status >= 500) {
                 console.log("Error 500");
                 alert("Error interno en servidor. Consulte con un administrador.");
