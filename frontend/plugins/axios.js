@@ -31,6 +31,8 @@ export default ({ app, store, redirect }) => {
 
             if (status >= 500) {
                 console.log("Error 500");
+                alert("Error interno en servidor. Consulte con un administrador.");
+                return redirect("/");
             }
 
             if (status === 401 && store.getters["auth/check"]) {
@@ -39,7 +41,6 @@ export default ({ app, store, redirect }) => {
                 redirect({ name: "login" });
             }
             console.warn("Ha habido un error con la petición");
-            alert("Error de conexión con el servidor.");
             return Promise.reject(error);
         }
     );
