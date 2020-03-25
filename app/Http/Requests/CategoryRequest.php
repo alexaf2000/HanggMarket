@@ -13,9 +13,18 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|unique:categories|max:40',
-            'description' => 'required|max:250'
-        ];
+        // If is updating...
+        if (isset($this->category->id)) {
+            return [
+                'name' => "required|max:40|unique:categories,name,{$this->category->id}",
+                'description' => 'required|max:250'
+            ];
+            // If not (is creating)
+        } else {
+            return [
+                'name' => 'required|max:40|unique:categories',
+                'description' => 'required|max:250'
+            ];
+        }
     }
 }
