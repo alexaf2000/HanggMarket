@@ -18,8 +18,8 @@ class ProductRequest extends FormRequest
             'name' => 'required|unique:products|max:40',
             'description' => 'required',
             'barcode' => 'required|integer|unique:products',
-            'categories' => 'array',
-            'categories.*' => 'required|integer|exists:categories,id', // Check if array values exists in categories table
+            'categories' => 'required|array',
+            'categories.*' => 'integer|exists:categories,id', // Check if array values exists in categories table
             'price' => 'required|numeric',
             'date_start' => 'date|nullable', // Can be not defined and auto-seted today
             'date_end' => 'required|date|after:date_start|after:today',
