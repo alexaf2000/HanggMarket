@@ -1,7 +1,21 @@
 <template>
   <div>
     <vs-row>
-      <vs-input placeholder="Buscar" icon="search" v-model="searching" v-on:keyup="loadData" />
+      <vs-input placeholder="Buscar" icon="search" v-model="searching.text" v-on:keyup="loadData" />
+      <vs-select
+          placeholder="Categoría"
+          autocomplete
+          label="Categoría"
+          v-model="searching.category"
+          v-on:change="loadData"
+        >
+          <vs-select-item
+            :key="index"
+            :value="category.id"
+            :text="category.name"
+            v-for="(category,index) in loadedCategories"
+          />
+        </vs-select>
       <vs-button
         @click="popupAddProduct=true"
         icon="add"
@@ -83,7 +97,12 @@
           </div>
           <div slot="footer">
             <vs-row vs-justify="flex-end">
-              <vs-button color="primary" radius icon="open_in_browser" v-on:click="goToProduct(product.id)" />
+              <vs-button
+                color="primary"
+                radius
+                icon="open_in_browser"
+                v-on:click="goToProduct(product.id)"
+              />
               <vs-button
                 color="danger"
                 radius
@@ -118,7 +137,10 @@ export default {
   data() {
     return {
       products: [],
-      searching: null,
+      searching: {
+        text: null,
+        category: null
+      },
       actualPage: 1,
       pages: 1,
       popupAddProduct: false,
@@ -150,7 +172,7 @@ export default {
       this.$vs.loading();
       await axios
         .get(process.env.apiUrl + "/product", {
-          params: { page: this.actualPage, search: this.searching }
+          params: { page: this.actualPage, search: this.searching.text, category: this.searching.category }
         })
         .then(response => {
           this.products = response.data.data;
@@ -182,6 +204,7 @@ export default {
         })
         .catch(error => {
           if (error.response.status == 422) {
+            this.productAdd.images = [];
             this.$vs.notify({
               title: "Error al añadir",
               text:
