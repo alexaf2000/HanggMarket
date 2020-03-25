@@ -38,7 +38,8 @@ export default ({ app, store, redirect }) => {
 
                 redirect({ name: "login" });
             }
-
+            console.warn("Ha habido un error con la petición");
+            alert("Error de conexión con el servidor.");
             return Promise.reject(error);
         }
     );

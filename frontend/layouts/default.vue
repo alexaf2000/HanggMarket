@@ -64,4 +64,14 @@ html {
 .right-content .basic-container{
   margin: 15px;
 }
+.vuesax-app-is-ltr .con-vs-popup {
+  z-index: 5;
+}
+.center-pagination .vs-pagination--mb {
+  justify-content: center !important;
+  width: 100% !important;
+}
+.vs-select--item-icon{
+  font-size: 1em!important;
+}
 </style>

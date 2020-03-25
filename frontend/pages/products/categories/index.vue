@@ -157,7 +157,10 @@ export default {
   methods: {
     async loadData() {
       this.$vs.loading();
-      await axios.get(process.env.apiUrl + "/category").then(response => {
+      await axios.get(process.env.apiUrl + "/category",{params: {
+            page: this.actualPage,
+            search: this.searching
+          }}).then(response => {
         this.categories = response.data.data;
         this.pages = response.data.last_page;
       });
@@ -271,9 +274,3 @@ export default {
   }
 };
 </script>
-<style>
-.category-pagination .vs-pagination--mb {
-  justify-content: center !important;
-  width: 100% !important;
-}
-</style>

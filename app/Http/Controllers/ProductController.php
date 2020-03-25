@@ -16,17 +16,26 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Set the day as today
         $date = Carbon::today();
+        $Products = new Product();
+
+        // Search terms if isset and is not empty
+        if (isset($request->search)) {
+            $searchTerm = $request->search;
+            $Products = $Products->where('name', 'LIKE', "%{$searchTerm}%")->orWhere('description', 'LIKE', "%{$searchTerm}%");
+        }
+
         // Return the Product with images, categories and JUST the price of today
         // ? Not used the Price model function because is not compatible with paginate
-        return Product::with(['Images', 'Categories', 'Prices' => function ($q) use ($date) {
+        $Products = $Products->with(['Images', 'Categories', 'Prices' => function ($q) use ($date) {
             $q->whereDate('date_start', '<=', $date);
             $q->whereDate('date_end', '>=', $date);
-            $q->first();
         }])->paginate(15);
+
+        return $Products;
     }
 
     /**
@@ -111,6 +120,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->forceDelete;
+        $product->forceDelete();
     }
 }
