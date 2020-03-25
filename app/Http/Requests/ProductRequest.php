@@ -22,7 +22,7 @@ class ProductRequest extends FormRequest
             'categories.*' => 'required|integer|exists:categories,id', // Check if array values exists in categories table
             'price' => 'required|numeric',
             'date_start' => 'date|nullable', // Can be not defined and auto-seted today
-            'date_end' => 'required|date|after:date_start',
+            'date_end' => 'required|date|after:date_start|after:today',
             'images' => 'nullable|array',
             'images.*' => 'nullable', // Check if array values exists in categories table
         ];
