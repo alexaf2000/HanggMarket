@@ -74,4 +74,8 @@ html {
 .vs-select--item-icon{
   font-size: 1em!important;
 }
+.vs-textarea{
+      font-family: sans-serif;
+      resize: none!important;
+}
 </style>

@@ -24,7 +24,8 @@
       >Añadir producto</vs-button>
       <vs-popup classContent="popup-example" title="Añadir producto" :active.sync="popupAddProduct">
         <vs-input label-placeholder="Nombre" v-model="productAdd.name" />
-        <vs-input label-placeholder="Descripcion" v-model="productAdd.description" />
+        <vs-input label-placeholder="Descripcion" />
+        <vs-textarea label="Descripción" v-model="productAdd.description" width="50%" height="120px" />
         <vs-input type="number" label-placeholder="Codigo de barras" v-model="productAdd.barcode" />
         <vs-input type="number" label-placeholder="Precio" v-model="productAdd.price" />
         <vs-input
@@ -55,15 +56,10 @@
           multiple
           text="Imagen de producto"
           ref="newImages"
+          limit="4"
           :show-upload-button="false"
           accept="image/x-png, image/gif, image/jpeg"
         />
-        <!-- <vs-select
-      label="Figuras"
-      v-model="select1"
-      >
-        <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="item,index in options1" />
-        </vs-select>-->
         <vs-button @click="addProduct">Añadir producto</vs-button>
       </vs-popup>
     </vs-row>
@@ -85,15 +81,18 @@
           <div slot="media">
             <img
               height="200"
-              :src="product.images.length ? product.images[0].image : 'https://www.gettyimages.es/gi-resources/images/500px/983794168.jpg'"
+              :src="product.images.length ? product.images[0].image : require(`~/assets/images/not_found_product.jpg`)"
             />
           </div>
           <div>
-            <b>{{product.barcode}}</b>
-            <span>{{product.description}}</span>
+            <p><b>{{product.barcode}}</b></p>
+
+            <p>{{product.description}}</p>
             <vs-chip
               color="danger"
             >{{product.prices.length ? product.prices[0].value +'€' : 'No disponible'}}</vs-chip>
+                  <vs-chip :key="index" v-for="(category, index) in product.categories">{{category.name}}</vs-chip>
+
           </div>
           <div slot="footer">
             <vs-row vs-justify="flex-end">
@@ -159,13 +158,8 @@ export default {
   },
   async fetch() {
     this.loadData();
-    await axios
-      .get(process.env.apiUrl + "/category", {
-        params: { all: true }
-      })
-      .then(response => {
-        this.loadedCategories = response.data;
-      });
+    // Load categories
+    this.loadCategories();
   },
   methods: {
     async loadData() {
@@ -179,6 +173,15 @@ export default {
           this.pages = response.data.last_page;
         });
       this.$vs.loading.close();
+    },
+    async loadCategories(){
+      await axios
+      .get(process.env.apiUrl + "/category", {
+        params: { all: true }
+      })
+      .then(response => {
+        this.loadedCategories = response.data;
+      });
     },
     async addProduct() {
       if (this.$refs.newImages.srcs.length) {
