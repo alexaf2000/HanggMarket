@@ -30,6 +30,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/update/{product}', 'ProductController@update');
         Route::delete('/destroy/{product}', 'ProductController@destroy');
     });
+    // Prices routes
+    Route::group(['prefix' => 'price'], function () {
+        Route::post('/store/product/{product}', 'PriceController@store');
+    });
     // Category routes
     Route::group(['prefix' => 'category', 'middleware' => 'auth:api'], function () {
         Route::get('/', 'CategoryController@index');
