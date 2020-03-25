@@ -86,9 +86,16 @@ class ProductController extends Controller
             'date_end' => Carbon::parse($request->date_end)
         ]);
 
+        // If image was set
         if (isset($request->images)) {
+            // Foreach image we gonna try to put it
             foreach ($request->images as $image) {
-                $Product->Images()->create(["image" => $image]);
+                try {
+                    $Product->Images()->create(["image" => $image]);
+                } catch (\Throwable $th) {
+                    // If there was some error uploading the image write on log file
+                    error_log($th->getMessage);
+                }
             }
         }
 
@@ -128,14 +135,27 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
+     * Update a product.
+     * Supports name,description,barcode and category
+     * Other paramethers needs it's own controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
     public function update(ProductRequest $request, Product $product)
     {
+        // Set new values
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->barcode = $request->barcode;
+
+        // Saves the new values into db
+        $product->save();
+
+        // Then creates the relationship
+        $product->categories()->sync($request->categories);
+
+        return $product;
     }
 
     /**
