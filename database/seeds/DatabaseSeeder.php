@@ -15,5 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         // Add's default categories
         $this->call(CategorySeeder::class);
+        // Add's default products (with prices and also categories relationship)
+        $this->call(ProductSeeder::class);
     }
 }
