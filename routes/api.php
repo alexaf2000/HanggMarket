@@ -51,6 +51,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/store', 'UserController@store');
         Route::get('/show/{user}', 'UserController@show');
         Route::post('/update/{user}', 'UserController@update');
+        Route::post('/update/{user}/credentials', 'UserController@updateCredentials');
+        Route::post('/update/{user}/image', 'UserController@updateProfileImage');
         Route::delete('/destroy/{user}', 'UserController@destroy');
     });
 
