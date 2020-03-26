@@ -28,6 +28,13 @@ class PriceController extends Controller
      */
     public function update(Request $request, Price $price)
     {
+        // Get all data from the request
+        $price->date_start = $request->date_start;
+        $price->date_end = $request->date_end;
+        $price->value = $request->value;
+
+        // Save the model in database
+        $price->save();
     }
 
     /**
