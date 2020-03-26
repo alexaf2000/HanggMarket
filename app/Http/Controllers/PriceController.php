@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PriceRequest;
 use App\Products\Price;
 use App\Products\Product;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class PriceController extends Controller
      * @param  \App\Products\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Product $product)
+    public function store(PriceRequest $request, Product $product)
     {
         return $product->Prices()->create(['date_start' => $request->date_start, 'date_end' => $request->date_end, 'value' => $request->value]);
     }
@@ -26,7 +27,7 @@ class PriceController extends Controller
      * @param  \App\Price  $price
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Price $price)
+    public function update(PriceRequest $request, Price $price)
     {
         // Get all data from the request
         $price->date_start = $request->date_start;
