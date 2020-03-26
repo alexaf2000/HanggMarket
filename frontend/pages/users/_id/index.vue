@@ -1,6 +1,5 @@
 <template>
   <div>
-    <vs-breadcrumb :items="breadcrumb" separator="chevron_right"></vs-breadcrumb>
     <h1>Modificar usuario</h1>
     <h3>{{originalUser.name}} {{originalUser.lastname}}</h3>
     <vs-row vs-justify="flex-start">
@@ -16,6 +15,7 @@
           <vs-upload
             limit="1"
             ref="file"
+            text="Subir imagen de perfil"
             :show-upload-button="false"
             accept="image/png, image/jpeg"
           />
@@ -27,7 +27,12 @@
         <vs-input type="date" label-placeholder="Fecha de nacimiento" v-model="user.birthdate" />
         <h4>Correo electronico</h4>
         <vs-input type="email" label-placeholder="Correo electronico" v-model="user.email" />
-        <vs-button color="primary" type="filled" v-on:click="modifyUser">Guardar cambios</vs-button>
+        <vs-button
+          color="primary"
+          type="filled"
+          v-on:click="modifyUser"
+          style="margin: 15px 0;"
+        >Guardar cambios</vs-button>
       </vs-col>
 
       <vs-col vs-w="6">
@@ -38,7 +43,12 @@
           label-placeholder="Confirmar contraseña nueva"
           v-model="user.password_confirmation"
         />
-        <vs-button color="primary" type="filled" v-on:click="modifyUserPassword">Cambiar contraseña</vs-button>
+        <vs-button
+          color="primary"
+          type="filled"
+          v-on:click="modifyUserPassword"
+          style="margin: 15px 0;"
+        >Cambiar contraseña</vs-button>
       </vs-col>
     </vs-row>
   </div>
@@ -64,17 +74,7 @@ export default {
         birthdate: "",
         profile_image: ""
       },
-      popupModifyProfileImage: false,
-      breadcrumb: [
-        {
-          title: "Usuarios",
-          url: "../users"
-        },
-        {
-          title: "Modificar usuario",
-          active: true
-        }
-      ]
+      popupModifyProfileImage: false
     };
   },
   async fetch() {

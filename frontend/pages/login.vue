@@ -43,7 +43,9 @@
                 <b>Por tu seguridad:</b> Asegurate de que eres el único usuario de este equipo.
               </span>
             </vs-alert>
-            <vs-alert :active="errors.length > 0" color="danger" icon="info"><p v-for="error in errors" :key="error+50">{{error}}</p></vs-alert>
+            <vs-alert :active="errors.length > 0" color="danger" icon="info">
+              <p v-for="error in errors" :key="error+50">{{error}}</p>
+            </vs-alert>
           </div>
           <div slot="footer">
             <vs-row vs-justify="flex-end">
@@ -88,11 +90,11 @@ export default {
       this.errors = [];
 
       this.errors.push("Debes de rellenar todos los campos.");
-
     },
     async loginFunc() {
       if (this.validLogin()) {
         this.$vs.loading();
+        // Do the request for login
         await this.$axios
           .post(process.env.apiUrl + "/login", this.login)
           .then(response => {
@@ -103,7 +105,10 @@ export default {
             });
           })
           .catch(error => {
+            // If there was an error then...
             if (error.response.status == 422) {
+              //If error was 422 (Bad formed request)
+              // Then show the message
               this.errors = [error.response.data.message];
             }
             this.$vs.notify({

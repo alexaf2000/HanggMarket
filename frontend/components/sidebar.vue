@@ -1,7 +1,6 @@
 <template>
   <div class="parentx-static">
     <vs-sidebar
-      default-index="1"
       color="primary"
       class="sidebarx"
       spacer
@@ -17,6 +16,7 @@
 
       <vs-divider icon="shopping_basket" position="left">Productos</vs-divider>
       <vs-sidebar-item index="2" icon="shopping_cart" to="/products">Productos</vs-sidebar-item>
+
       <vs-sidebar-item index="3" icon="view_module" to="/products/categories">Categorías</vs-sidebar-item>
 
       <vs-divider icon="person" position="left">User</vs-divider>
@@ -25,7 +25,6 @@
 
       <div class="footer-sidebar" slot="footer">
         <vs-button icon="reply" color="danger" type="flat" v-on:click="logout">Cerrar sesión</vs-button>
-        <vs-button icon="settings" color="primary" type="border"></vs-button>
       </div>
     </vs-sidebar>
   </div>
@@ -36,12 +35,16 @@ import { mapGetters } from "vuex";
 
 export default {
   methods: {
+    //Logout method
     async logout() {
+      // Calls to store
       this.$store.dispatch("auth/logout");
+      // Then, redirect to login page
       this.$router.push("/login");
     }
   },
   computed: {
+    // Allow get data from user stored in storage(vuex)
     ...mapGetters({
       user: "auth/user"
     })

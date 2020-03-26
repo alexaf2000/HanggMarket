@@ -7,6 +7,7 @@
           color="primary"
           type="border"
           icon="add"
+          size="small"
         >Añadir categoría</vs-button>
         <!-- Add category -->
         <vs-prompt
@@ -23,21 +24,15 @@
             Introduce los datos de la nueva
             <b>categoría</b>.
             <vs-input
-              placeholder="Nombre"
+              label-placeholder="Nombre"
               v-on:keyup.enter="addCategory"
               v-model="newCategory.name"
             />
             <vs-input
-              placeholder="Descripción"
+              label-placeholder="Descripción"
               v-on:keyup.enter="addCategory"
               v-model="newCategory.description"
             />
-
-            <vs-alert
-              :active="!validValues"
-              color="danger"
-              icon="new_releases"
-            >No pueden quedar campos vacíos</vs-alert>
           </div>
         </vs-prompt>
       </vs-col>
@@ -56,13 +51,14 @@
             :active.sync="popupModifyCategory"
           >
             <vs-input
-              placeholder="Nombre"
+              label-placeholder="Nombre"
               v-on:keyup.enter="ModifyCategory"
               v-model="toModify.name"
             />
             <vs-input
-              placeholder="Descripción"
+              label-placeholder="Descripción"
               v-on:keyup.enter="ModifyCategory"
+              style="margin: 25px 0;"
               v-model="toModify.description"
             />
             <vs-button @click="ModifyCategory">Guardar cambios</vs-button>
@@ -145,25 +141,23 @@ export default {
   async fetch() {
     loadData();
   },
-  // Validates is not empty name and description
-  computed: {
-    validValues() {
-      return (
-        this.newCategory.name.length > 0 &&
-        this.newCategory.description.length > 0
-      );
-    }
-  },
   methods: {
     async loadData() {
       this.$vs.loading();
-      await axios.get(process.env.apiUrl + "/category",{params: {
-            page: this.actualPage,
-            search: this.searching
-          }}).then(response => {
-        this.categories = response.data.data;
-        this.pages = response.data.last_page;
-      });
+      await axios
+        .get(process.env.apiUrl + "/category", {
+          params: {
+            page: this.actualPage, // We send as parameter the actual page
+            search: this.searching // And search terms
+          }
+        })
+        .then(response => {
+          // When getting response, then
+          // set categories as the data
+          // and pages as the lastpage (because is the max size of pages)
+          this.categories = response.data.data;
+          this.pages = response.data.last_page;
+        });
       this.$vs.loading.close();
     },
     //If page is changed
@@ -229,7 +223,7 @@ export default {
         acceptText: "Confirmar",
         cancelText: "Cancelar",
         text: `Se va a proceder con la eliminación de la categoría "${this.selected.name}".`,
-        accept: this.DeleteCategory
+        accept: this.DeleteCategory // If press accept then call this function
       });
     },
     // On delete category
@@ -249,7 +243,9 @@ export default {
     },
     // On press modify button
     modifyCategoryButton() {
-      this.popupModifyCategory = true;
+      this.popupModifyCategory = true; // Shows the popup
+      // Set the toModify values as the selected object data
+      // because we gonna modify the selected object
       this.toModify.id = this.selected.id;
       this.toModify.name = this.selected.name;
       this.toModify.description = this.selected.description;

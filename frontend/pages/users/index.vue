@@ -2,13 +2,12 @@
   <div>
     <vs-row>
       <vs-col>
-        <vs-breadcrumb :items="breadcrumb" separator="chevron_right"></vs-breadcrumb>
-
         <vs-button
           @click="popupCreateUser=true"
           color="#008bef"
           size="small"
           icon="add"
+          style="margin:5px 0"
         >Añadir usuario</vs-button>
         <!-- create user popup -->
         <vs-popup title="Crear usuario" :active.sync="popupCreateUser">
@@ -143,12 +142,6 @@ export default {
     pages: 0,
     actualPage: 1,
     popupCreateUser: false,
-    breadcrumb: [
-      {
-        title: "Usuarios",
-        active: true
-      }
-    ]
   }),
   // Autoexecuted before load page
   async fetch() {

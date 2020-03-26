@@ -1,9 +1,25 @@
 <template>
   <div>
     <vs-row>
-      <vs-input placeholder="Buscar" icon="search" v-model="searching.text" v-on:keyup="loadData" />
-      <vs-select
-          placeholder="Categoría"
+      <vs-col vs-w="2">
+        <vs-button
+          @click="popupAddProduct=true"
+          icon="add"
+          color="#007bef"
+          size="small"
+        >Añadir producto</vs-button>
+      </vs-col>
+      <vs-col vs-w="8">
+        <vs-input
+        style="width:  90%;"
+          placeholder="Buscar"
+          v-model="searching.text"
+          v-on:keyup="loadData"
+        />
+      </vs-col>
+      <vs-col vs-w="2">
+        <vs-select
+          placeholder="Mostrar por categoría..."
           autocomplete
           label="Categoría"
           v-model="searching.category"
@@ -16,51 +32,59 @@
             v-for="(category,index) in loadedCategories"
           />
         </vs-select>
-      <vs-button
-        @click="popupAddProduct=true"
-        icon="add"
-        color="#007bef"
-        size="small"
-      >Añadir producto</vs-button>
-      <vs-popup classContent="popup-example" title="Añadir producto" :active.sync="popupAddProduct">
-        <vs-input label-placeholder="Nombre" v-model="productAdd.name" />
-        <vs-textarea label="Descripción" v-model="productAdd.description" width="50%" height="120px" />
-        <vs-input type="number" label-placeholder="Codigo de barras" v-model="productAdd.barcode" />
-        <vs-input type="number" label-placeholder="Precio" v-model="productAdd.price" />
-        <vs-input
-          type="date"
-          label-placeholder="Fecha inicio de precio"
-          v-model="productAdd.date_start"
-        />
-        <vs-input
-          type="date"
-          label-placeholder="Fecha finalizacion de recio"
-          v-model="productAdd.date_end"
-        />
-        <vs-select
-          placeholder="Categorías"
-          multiple
-          autocomplete
-          label="Categorías"
-          v-model="productAdd.categories"
+        <vs-popup
+          classContent="popup-example"
+          title="Añadir producto"
+          :active.sync="popupAddProduct"
         >
-          <vs-select-item
-            :key="index"
-            :value="category.id"
-            :text="category.name"
-            v-for="(category,index) in loadedCategories"
+          <vs-input label-placeholder="Nombre" v-model="productAdd.name" />
+          <vs-textarea
+            label="Descripción"
+            v-model="productAdd.description"
+            width="50%"
+            height="120px"
           />
-        </vs-select>
-        <vs-upload
-          multiple
-          text="Imagen de producto"
-          ref="newImages"
-          limit="4"
-          :show-upload-button="false"
-          accept="image/x-png, image/gif, image/jpeg"
-        />
-        <vs-button @click="addProduct">Añadir producto</vs-button>
-      </vs-popup>
+          <vs-input
+            type="number"
+            label-placeholder="Codigo de barras"
+            v-model="productAdd.barcode"
+          />
+          <vs-input type="number" label-placeholder="Precio" v-model="productAdd.price" />
+          <vs-input
+            type="date"
+            label-placeholder="Fecha inicio de precio"
+            v-model="productAdd.date_start"
+          />
+          <vs-input
+            type="date"
+            label-placeholder="Fecha finalizacion de recio"
+            v-model="productAdd.date_end"
+          />
+          <vs-select
+            placeholder="Categorías"
+            multiple
+            autocomplete
+            label="Categorías"
+            v-model="productAdd.categories"
+          >
+            <vs-select-item
+              :key="index"
+              :value="category.id"
+              :text="category.name"
+              v-for="(category,index) in loadedCategories"
+            />
+          </vs-select>
+          <vs-upload
+            multiple
+            text="Imagen de producto"
+            ref="newImages"
+            limit="4"
+            :show-upload-button="false"
+            accept="image/x-png, image/gif, image/jpeg"
+          />
+          <vs-button @click="addProduct">Añadir producto</vs-button>
+        </vs-popup>
+      </vs-col>
     </vs-row>
 
     <vs-row vs-justify="center">
@@ -84,14 +108,15 @@
             />
           </div>
           <div>
-            <p><b>{{product.barcode}}</b></p>
+            <p>
+              <i>{{product.barcode}}</i>
+            </p>
 
             <p>{{product.description}}</p>
             <vs-chip
               color="danger"
             >{{product.prices.length ? product.prices[0].value +'€' : 'No disponible'}}</vs-chip>
-                  <vs-chip :key="index" v-for="(category, index) in product.categories">{{category.name}}</vs-chip>
-
+            <vs-chip :key="index" v-for="(category, index) in product.categories">{{category.name}}</vs-chip>
           </div>
           <div slot="footer">
             <vs-row vs-justify="flex-end">
@@ -165,7 +190,11 @@ export default {
       this.$vs.loading();
       await axios
         .get(process.env.apiUrl + "/product", {
-          params: { page: this.actualPage, search: this.searching.text, category: this.searching.category }
+          params: {
+            page: this.actualPage,
+            search: this.searching.text,
+            category: this.searching.category
+          }
         })
         .then(response => {
           this.products = response.data.data;
@@ -173,14 +202,14 @@ export default {
         });
       this.$vs.loading.close();
     },
-    async loadCategories(){
+    async loadCategories() {
       await axios
-      .get(process.env.apiUrl + "/category", {
-        params: { all: true }
-      })
-      .then(response => {
-        this.loadedCategories = response.data;
-      });
+        .get(process.env.apiUrl + "/category", {
+          params: { all: true }
+        })
+        .then(response => {
+          this.loadedCategories = response.data;
+        });
     },
     async addProduct() {
       if (this.$refs.newImages.srcs.length) {
@@ -252,7 +281,6 @@ export default {
 
 <style>
 .product-item {
-  margin: 20px;
-  max-height: 350px;
+  margin: 30px;
 }
 </style>
