@@ -24,7 +24,6 @@
       >Añadir producto</vs-button>
       <vs-popup classContent="popup-example" title="Añadir producto" :active.sync="popupAddProduct">
         <vs-input label-placeholder="Nombre" v-model="productAdd.name" />
-        <vs-input label-placeholder="Descripcion" />
         <vs-textarea label="Descripción" v-model="productAdd.description" width="50%" height="120px" />
         <vs-input type="number" label-placeholder="Codigo de barras" v-model="productAdd.barcode" />
         <vs-input type="number" label-placeholder="Precio" v-model="productAdd.price" />
