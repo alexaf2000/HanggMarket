@@ -10,6 +10,7 @@
           size="small"
           icon="add"
         >Añadir usuario</vs-button>
+        <!-- create user popup -->
         <vs-popup title="Crear usuario" :active.sync="popupCreateUser">
           <vs-input color="#008bef" v-model="newUser.name" label-placeholder="Nombre" />
           <vs-input color="#008bef" v-model="newUser.lastname" label-placeholder="Apellido" />
@@ -24,6 +25,12 @@
             type="password"
             v-model="newUser.password"
             label-placeholder="Contraseña"
+          />
+          <vs-input
+            color="#008bef"
+            type="password"
+            v-model="newUser.password_confirmation"
+            label-placeholder="Confirmar contraseña"
           />
           <vs-input
             color="#008bef"
@@ -128,6 +135,7 @@ export default {
       lastname: "",
       email: "",
       password: null,
+      password_confirmation: null,
       birthdate: null,
       profile_image: null
     },
