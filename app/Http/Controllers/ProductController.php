@@ -27,6 +27,7 @@ class ProductController extends Controller
         $Products = $Products->with(['Images', 'Categories', 'Prices' => function ($q) use ($date) {
             $q->whereDate('date_start', '<=', $date);
             $q->whereDate('date_end', '>=', $date);
+            $q->limit(1);
         }]);
 
 
@@ -117,7 +118,7 @@ class ProductController extends Controller
         $product = Product::with(['Images', 'Categories', 'Prices' => function ($q) use ($date) {
             $q->whereDate('date_start', '<=', $date);
             $q->whereDate('date_end', '>=', $date);
-            $q->first();
+            $q->limit(1);
         }])->find($product->id);
         return $product;
     }
