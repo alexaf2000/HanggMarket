@@ -43,6 +43,7 @@
                 <b>Por tu seguridad:</b> Asegurate de que eres el único usuario de este equipo.
               </span>
             </vs-alert>
+            <vs-alert :active="errors.length > 0" color="danger" icon="info"><p v-for="error in errors" :key="error+50">{{error}}</p></vs-alert>
           </div>
           <div slot="footer">
             <vs-row vs-justify="flex-end">
@@ -64,8 +65,8 @@ export default {
     };
   },
   computed: {
-    test() {
-      return this.$store.getters;
+    validCredentials() {
+      return this.login.email.length > 0 && this.login.password.length > 0;
     }
   },
   data() {
@@ -75,36 +76,48 @@ export default {
         password: ""
       },
       remember: false,
-      loginError: null
+      loginError: null,
+      errors: []
     };
   },
   methods: {
-    async loginFunc() {
-      this.$vs.loading();
-      await this.$axios
-        .post(process.env.apiUrl + "/login", this.login)
-        .then(response => {
-          // Save the token.
-          this.$store.dispatch("auth/saveToken", {
-            token: response.data.token,
-            remember: this.remember
-          });
-        })
-        .catch(error => {
-          if (error.response.status == 422) {
-            this.loginError = error.response.data.message;
-          }
-          this.$vs.notify({
-            color: "danger",
-            title: "Ha habido un error...",
-            text: "No se ha podido iniciar sesión."
-          });
-        });
+    validLogin: function(e) {
+      if (this.login.email && this.login.password) {
+        return true;
+      }
+      this.errors = [];
 
-      // Fetch the user.
-      await this.$store.dispatch("auth/fetchUser");
-      this.$router.push("/");
-      this.$vs.loading.close();
+      this.errors.push("Debes de rellenar todos los campos.");
+
+    },
+    async loginFunc() {
+      if (this.validLogin()) {
+        this.$vs.loading();
+        await this.$axios
+          .post(process.env.apiUrl + "/login", this.login)
+          .then(response => {
+            // Save the token.
+            this.$store.dispatch("auth/saveToken", {
+              token: response.data.token,
+              remember: this.remember
+            });
+          })
+          .catch(error => {
+            if (error.response.status == 422) {
+              this.errors = [error.response.data.message];
+            }
+            this.$vs.notify({
+              color: "danger",
+              title: "Ha habido un error...",
+              text: "No se ha podido iniciar sesión."
+            });
+          });
+
+        // Fetch the user.
+        await this.$store.dispatch("auth/fetchUser");
+        this.$router.push("/");
+        this.$vs.loading.close();
+      }
     }
   }
 };
