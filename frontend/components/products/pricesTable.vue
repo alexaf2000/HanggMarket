@@ -27,9 +27,12 @@
       <vs-input type="date" label-placeholder="Fecha de inicio" v-model="price.date_start"></vs-input>
       <vs-input type="date" label-placeholder="Fecha de finalización" v-model="price.date_end"></vs-input>
       <vs-button v-if="!selected" v-on:click="addPrice">Añadir precio</vs-button>
-      <vs-button v-if="selected">Modificar precio</vs-button>
+      <vs-button v-if="selected" v-on:click="modifyPrice">Modificar precio</vs-button>
       <vs-button :disabled="!selected" v-on:click="selected = null">Deseleccionar</vs-button>
       <vs-button v-if="selected" color="danger" v-on:click="dialogDeletePrice(selected.id)">Eliminar</vs-button>
+      <vs-alert :active="errors.length > 0" icon="info" color="danger">
+        <p v-for="error in errors">{{error}}</p>
+      </vs-alert>
     </vs-col>
   </vs-row>
 </template>
@@ -48,11 +51,13 @@ export default {
       date_start: null,
       date_end: null
     },
-    prices: []
+    prices: [],
+    errors: []
   }),
   methods: {
     // Get prices for this product
     async loadData() {
+      this.price = { value: "", date_start: null, date_end: null };
       await axios
         .get(process.env.apiUrl + "/product/show/" + this.productId + "/prices")
         .then(response => {
@@ -60,10 +65,34 @@ export default {
         });
     },
     async addPrice() {
-      await axios.post(
-        process.env.apiUrl + "/price/store/product/" + this.productId,
-        this.price
-      );
+      if (this.validPrice()) {
+        await axios.post(
+          process.env.apiUrl + "/price/store/product/" + this.productId,
+          this.price
+        );
+        this.$vs.notify({
+          title: "Precio añadido correctamente.",
+          text: "El precio ha sido añadido correctamente.",
+          color: "success",
+          icon: "check_box"
+        });
+        this.loadData();
+      }
+    },
+    async modifyPrice() {
+      if (this.validPrice()) {
+        await axios.post(
+          process.env.apiUrl + "/price/update/" + this.selected.id,
+          this.price
+        );
+        this.$vs.notify({
+          title: "Precio modificado.",
+          text: "El precio ha sido modificado correctamente.",
+          color: "success",
+          icon: "check_box"
+        });
+        this.loadData();
+      }
     },
     dialogDeletePrice(id) {
       this.$vs.dialog({
@@ -88,6 +117,14 @@ export default {
           });
           this.loadData();
         });
+    },
+    validPrice: function(e) {
+      this.errors = [];
+      if (this.price.value && this.price.date_start && this.price.date_end) {
+        return true;
+      }
+
+      this.errors.push("Debes de rellenar todos los campos.");
     }
   }
 };
