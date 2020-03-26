@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the users.
+     * Display a listing of the users paginated by 15.
      *
      * @return \Illuminate\Http\Response
      */
@@ -26,6 +26,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // Let's validate the request
+        $request->validate([
+            'name' => 'required',
+            'lastname' => 'required',
+            'email' => 'email|required|unique:users,email',
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password',
+            'birthdate' => 'date|required',
+        ]);
+
+        // Let's create the user with the request values
         $User = new User([
             'name' => $request->name,
             'lastname' => $request->lastname,
@@ -33,8 +44,9 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
             'birthdate' => Carbon::parse($request->birthdate)
         ]);
+        // If is set a profile image
         if ($request->profile_image) {
-
+            // Also define it
             $User->profile_image = $request->profile_image;
         }
         $User->save();
@@ -53,7 +65,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user in db.
+     * Update the specified public data of user in db.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
@@ -61,18 +73,66 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $User = ([
+        // Let's validate the request
+        $request->validate([
+            'name' => 'required',
+            'lastname' => 'required',
+            'email' => 'email|required|unique:users,email,' . $user->id,
+            'birthdate' => 'date|required',
+        ]);
+
+        // Fill the new data with user object
+        $user->fill([
             'name' => $request->name,
             'lastname' => $request->lastname,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
             'birthdate' => Carbon::parse($request->birthdate)
         ]);
-        if ($request->profile_image) {
-            $User->profile_image = $request->profile_image;
-        }
-        $User->save();
-        return $User;
+        // Saves the user data
+        $user->save();
+        return $user;
+    }
+
+    /**
+     * Update the password of a user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateCredentials(Request $request, User $user)
+    {
+        // Let's validate if password is confirmed and equals
+        $request->validate([
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        // Saves the user data
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return $user;
+    }
+    /**
+     * Update the profile image of a user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfileImage(Request $request, User $user)
+    {
+        // Validate if ProfileImage is on request
+        $request->validate([
+            'profile_image' => 'required',
+        ]);
+
+        // Saves the profile image
+        $user->profile_image = $request->profile_image;
+        $user->save();
+
+        return $user;
     }
 
     /**
