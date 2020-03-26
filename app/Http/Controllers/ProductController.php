@@ -23,7 +23,7 @@ class ProductController extends Controller
         $Products = new Product();
 
         // Return the Product with images, categories and JUST the price of today
-        // ? Not used the Price model function because is not compatible with paginate
+        // ! Not used the $Product->Price model function because is not compatible with pagination
         $Products = $Products->with(['Images', 'Categories', 'Prices' => function ($q) use ($date) {
             $q->whereDate('date_start', '<=', $date);
             $q->whereDate('date_end', '>=', $date);
