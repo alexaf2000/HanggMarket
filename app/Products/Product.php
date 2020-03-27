@@ -46,23 +46,16 @@ class Product extends Model
     }
 
     /**
-     * Price function
+     * Price attribute
      * This will return the price of the product in a date.
-     * @param String $dateToFind
      * @return Price
      */
-    public function Price()
-    {
-        $date = Carbon::today();
-        $price = $this->Prices()->whereDate('date_start', '<=', $date)->whereDate('date_end', '>=', $date)->first();
-        if ($price !== null) {
-            return $price->value;
-        }
-    }
 
-    public function getPriceAttribute($value)
+    public function getPriceAttribute()
     {
+        // Uses today date
         $date = Carbon::today();
+
         $price = $this->Prices()->whereDate('date_start', '<=', $date)->whereDate('date_end', '>=', $date)->first();
         if ($price !== null) {
             return $price->value;
