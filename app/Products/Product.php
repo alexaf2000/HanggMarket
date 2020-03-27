@@ -14,6 +14,7 @@ class Product extends Model
     protected $fillable = [
         'name', 'description', 'barcode'
     ];
+    protected $appends = ['price'];
 
     /**
      * Categories
@@ -51,6 +52,15 @@ class Product extends Model
      * @return Price
      */
     public function Price()
+    {
+        $date = Carbon::today();
+        $price = $this->Prices()->whereDate('date_start', '<=', $date)->whereDate('date_end', '>=', $date)->first();
+        if ($price !== null) {
+            return $price->value;
+        }
+    }
+
+    public function getPriceAttribute($value)
     {
         $date = Carbon::today();
         $price = $this->Prices()->whereDate('date_start', '<=', $date)->whereDate('date_end', '>=', $date)->first();

@@ -6,7 +6,7 @@
         <p>
           <vs-chip
             color="danger"
-          >{{originalProduct.prices && originalProduct.prices.length ? originalProduct.prices[0].value +'€' : 'No disponible'}}</vs-chip>
+          >{{originalProduct.price ? originalProduct.price +'€' : 'No disponible'}}</vs-chip>
         </p>
 
         <vs-images class="images-slider" hover="scale" not-border-radius>

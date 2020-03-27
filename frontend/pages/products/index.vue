@@ -115,7 +115,7 @@
             <p>{{product.description}}</p>
             <vs-chip
               color="danger"
-            >{{product.prices.length ? product.prices[0].value +'€' : 'No disponible'}}</vs-chip>
+            >{{product.price ? product.price +'€' : 'No disponible'}}</vs-chip>
             <vs-chip :key="index" v-for="(category, index) in product.categories">{{category.name}}</vs-chip>
           </div>
           <div slot="footer">

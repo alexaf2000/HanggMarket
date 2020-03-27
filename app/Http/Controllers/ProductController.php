@@ -23,12 +23,8 @@ class ProductController extends Controller
         $Products = new Product();
 
         // Return the Product with images, categories and JUST the price of today
-        // ! Not used the $Product->Price model function because is not compatible with pagination
-        $Products = $Products->with(['Images', 'Categories', 'Prices' => function ($q) use ($date) {
-            $q->whereDate('date_start', '<=', $date);
-            $q->whereDate('date_end', '>=', $date);
-            $q->limit(1);
-        }]);
+        // (price as model accessor)
+        $Products = $Products->with(['Images', 'Categories']);
 
 
         // Search where category - If defined Category as parameter
@@ -114,12 +110,9 @@ class ProductController extends Controller
         // Generates the date as today
         $date = Carbon::today();
 
-        // Returns the product with images, categories and price of today
-        $product = Product::with(['Images', 'Categories', 'Prices' => function ($q) use ($date) {
-            $q->whereDate('date_start', '<=', $date);
-            $q->whereDate('date_end', '>=', $date);
-            $q->limit(1);
-        }])->find($product->id);
+        // Returns the product with images, categories and price of today (price as model accessor)
+        $product = Product::with(['Images', 'Categories'])->find($product->id);
+
         return $product;
     }
 
