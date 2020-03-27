@@ -106,10 +106,12 @@ export default {
           })
           .catch(error => {
             // If there was an error then...
-            if (error.response.status == 422) {
-              //If error was 422 (Bad formed request)
-              // Then show the message
-              this.errors = [error.response.data.message];
+            if (error.response) {
+              if (error.response.status == 422) {
+                //If error was 422 (Bad formed request)
+                // Then show the message
+                this.errors = [error.response.data.message];
+              }
             }
             this.$vs.notify({
               color: "danger",
